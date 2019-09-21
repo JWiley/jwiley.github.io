@@ -1,0 +1,426 @@
+---
+title: Joshua F. Wiley's CV
+---
+
+
+```{r load_packages, message=FALSE, warning=FALSE, include=FALSE} 
+
+library(checkpoint); checkpoint("2019-07-13", scanForPackages = FALSE)
+library(fontawesome)
+library(readxl)
+library(data.table)
+library(rmarkdown)
+library(scholar)
+library(ggplot2)
+library(plotly)
+
+cyear <- as.integer(format(Sys.Date(), format = "%Y"))
+oldyear <- cyear - 4
+yearSincePhD <- round(as.numeric(
+  difftime(Sys.Date(), as.Date("2015-03-24"),
+           units = "days")/365.25), 1)
+
+getCites <- function(id) {
+  ct <- get_citation_history(id)
+  ct2 <- ct
+  ct2$cites <- cumsum(ct2$cites)
+  ct$Type <- "Yearly"
+  ct2$Type <- "Cumulative"
+  ct <- rbind(ct, ct2)
+  ct$ID <- id
+  return(ct)
+}
+                  
+jwCites <- function() {
+  ct <- getCites("bRG3LSQAAAAJ")
+  ggplot(ct, aes(year, cites)) +
+    geom_bar(stat = "identity") +
+    ylab("Number of Citations") + 
+    theme_classic() +
+    theme(axis.title.x = element_blank()) + 
+    facet_wrap(~ Type, scales = "free_y") + 
+    coord_cartesian(expand=FALSE) +
+    ggtitle("Google Scholar Citations")
+}
+
+citeplot <- tryCatch(jwCites(), error = function(e) ggplot() + ggtitle("Could not pull citations."))
+
+
+## seniorlecturers <- list(
+##   `Trevor T-J Chong` = getCites("qLkvokIAAAAJ"),
+##   `Bradley A Edwards` = getCites("yypftd8AAAAJ"),
+##   `James Coxon` = getCites("hnAesu8AAAAJ"),
+##   `Ziarih Hawi` = getCites("PBuc7msAAAAJ"),
+##   `Laura Jobson` = getCites("dktQ3XQAAAAJ"),
+##   `Adam McKay` = getCites("KjOgwiQAAAAJ"),
+##   `Adeel Razi` = getCites("VG3onZwAAAAJ"),
+##   `Andrew J K Phillips` = getCites("w1fBCWIAAAAJ"),
+##   `Rebecca Anne Segrave` = getCites("-l_x5sAAAAAJ"),
+##   `Megan Spencer-Smith` = getCites("Z0WEv1oAAAAJ"),
+##   `Renerus Stolwyk` = getCites("k6MqWxgAAAAJ"),
+##   `Bei Bei` = getCites("wMBLE0IAAAAJ"),
+##   `Tracey Sletten` = getCites("OjrCgUoAAAAJ"),
+##   `Joshua F Wiley` = getCites("bRG3LSQAAAAJ"))
+## d <- as.data.table(do.call(rbind, lapply(names(seniorlecturers), function(v) {
+##   cbind(seniorlecturers[[v]], Name = v, Select = ifelse(v == "Joshua F Wiley",
+##                                                         "Applicant", "Level C\nComparators"))
+## })))
+## d2 <- d[Type == "Yearly" & year > 2012]
+## d2[, Rank := paste0(rank(-cites, ties.method = "max"), "/14"), by = year]
+## sqdiff <- function(x, j = .5) abs((x - (sqrt(x) + j)^2) )
+## compareplot <- ggplot(d2, aes(year, cites, group = Name, colour = Select, size = Select)) +
+##   ## geom_boxplot(aes(group = year, colour = NULL, size = NULL),
+##   ##              width = .3, colour = "grey80", show.legend = FALSE) + 
+##   geom_line() +
+##   ## stat_summary(aes(group = NULL, colour = NULL, size = NULL),
+##   ##              fun.y = median, geom = "point", shape = 18, size = 3, colour = "grey50") +
+##   geom_label(aes(year, cites + sqdiff(cites, 1), label = Rank),
+##              data = d2[Name=="Joshua F Wiley"], show.legend = FALSE) + 
+##   scale_colour_manual("Who", values = c("Applicant" = "black", "Level C\nComparators" = "grey60")) + 
+##   scale_size_manual("Who", values = c("Applicant" = 2, "Level C\nComparators" = .5)) + 
+##   scale_x_continuous("Year", breaks = 2013:2019) +
+##   scale_y_sqrt("Yearly Citations (Google Scholar)", breaks = c(10, 100, 200, 400, 600)) + 
+##   theme_classic() +
+##   coord_cartesian(xlim = c(2013 - .2, 2019 + .2), ylim = c(10, 640), expand = FALSE) +
+##   theme(legend.position = c(.8, .15)) +
+##   labs(caption = "Numbers show applicant rank")
+
+
+pubs <- read_excel("~/OneDrive/WileyDossier/CV_Full.xlsx", sheet = "Publications")
+pubs <- as.data.table(pubs)
+
+tmp <- pubs[Type %in% c("Empirical", "Review"), FirstLast]
+NFirstLast <- sum(tmp == 1)
+NCoAuthor <- sum(tmp == 0)
+NBooks <- nrow(pubs[Type %in% c("Book")])
+NOther <- nrow(pubs[!Type %in% c("Empirical", "Review", "Book")])
+rm(tmp)
+
+prpubs <- pubs[Type %in% c("Empirical", "Review")]
+prpubs[, Num := .N:1]
+
+bpubs <- pubs[Type %in% c("Book", "Book Chapter")]
+bpubs[, Num := .N:1]
+
+epubs <- pubs[Type %in% c("Editorial")]
+epubs[, Num := .N:1]
+
+presentations <- read_excel("~/OneDrive/WileyDossier/CV_Full.xlsx", sheet = "Presentations")
+presentations <- as.data.table(presentations)
+
+leadabstracts <- presentations[FirstLast == 1 & Type != "Invited"]
+leadabstracts[, Num := .N:1]
+
+coabstracts <- presentations[FirstLast == 0 & Type != "Invited"]
+coabstracts[, Num := .N:1]
+
+invited <- presentations[FirstLast == 1 & Type == "Invited"]
+invited[, Num := .N:1]
+
+printPubs <- function(year, d) {
+  paste(c(
+    sprintf("`%s`", as.character(year)),
+    "<ol>",
+    paste(sprintf("<li value = %d>%s</li>", d[Year == year, Num], d[Year == year, Reference]),
+          collapse = "\n"),
+    "</ol>"), collapse = "\n")
+}
+
+students <- read_excel("~/OneDrive/WileyDossier/CV_Full.xlsx", sheet = "Students")
+students <- as.data.table(students)[Status != "Withdrew"]
+
+tmp <- students[Type %in% c("DPsych (Clinical)", "PhD (Clinical)", "PhD"), Primary]
+NPrimary <- sum(tmp == 1)
+NSecondary <- sum(tmp == 0)
+rm(tmp)
+
+students[, CVSummary := sprintf("%s %s | %d - %s | %s | %s supervisor",
+                                GivenName, FamilyName, Started,
+                                ifelse(Status == "Current", "current", Ended),
+                                Type, ifelse(Primary == 1, "primary", "co"))]
+
+dstudents <- students[Type %in%
+                      c("DPsych (Clinical)", "PhD (Clinical)", "PhD")][
+  order(-Started, -Type)]
+dstudents[, Num := .N:1]
+dstudents[, CVSummary := sprintf("<li value = %d>%s</li>", Num, CVSummary)]
+dstudents <- paste(c("<ol>", dstudents$CVSummary, "</ol>"), collapse = "\n")
+
+hstudents <- students[Type %in% c("Honours")][order(-Started)]
+hstudents[, Num := .N:1]
+hstudents[, CVSummary := sprintf("<li value = %d>%s</li>", Num, CVSummary)]
+hstudents <- paste(c("<ol>", hstudents$CVSummary, "</ol>"), collapse = "\n")
+
+teaching <- read_excel("~/OneDrive/WileyDossier/CV_Full.xlsx", sheet = "Teaching")
+teaching <- as.data.table(teaching)[order(Level, -Ended, -Year, Role)]
+teaching[, Num := .N:1]
+teaching[, CVSummary := sprintf("%d - %s | %s | *%s* (%s) | %s",
+        Year, Ended,
+        Role,
+        Title, Code,
+        Organization)]
+
+dteaching <- teaching[Level == "Doctoral"]
+dteaching[, CVSummary := sprintf("<li value = %d>%s</li>", Num, CVSummary)]
+dteaching <- paste(c("<ol>", dteaching$CVSummary, "</ol>"), collapse = "\n")
+
+hteaching <- teaching[Level == "Honours"]
+hteaching[, CVSummary := sprintf("<li value = %d>%s</li>", Num, CVSummary)]
+hteaching <- paste(c("<ol>", hteaching$CVSummary, "</ol>"), collapse = "\n")
+
+uteaching <- teaching[Level == "Undergraduate"]
+uteaching[, CVSummary := sprintf("<li value = %d>%s</li>", Num, CVSummary)]
+uteaching <- paste(c("<ol>", uteaching$CVSummary, "</ol>"), collapse = "\n")
+
+
+grants <- read_excel("~/OneDrive/WileyDossier/CV_Full.xlsx", sheet = "Grants")
+grants <- as.data.table(grants)[, Started := as.Date(Started)]
+grants[, Ended := as.Date(Ended)]
+grants <- grants[order(Status, -Started)]
+
+
+
+grants[, CVSummary := sprintf("**%s - %s** | %s (%s)<br />**PI**: %s<br />**Total Value**: %s (%s)<br />**Role**: %s",
+        format(Started, format = "%Y"),
+        format(Ended, format = "%Y"),
+        Number, Funder,
+        PI,
+        formatC(Total, format="f", digits=0, big.mark=","), Currency,
+        Role)]
+grants[, Num := .N:1]
+
+cgrants <- grants[Status == "Current"]
+cgrants[, CVSummary := sprintf("<li value = %d>%s</li>", Num, CVSummary)]
+cgrants <- paste(c("<ol>", cgrants$CVSummary, "</ol>"), collapse = "\n")
+
+pgrants <- grants[Status == "Past"]
+pgrants[, CVSummary := sprintf("<li value = %d>%s</li>", Num, CVSummary)]
+pgrants <- paste(c("<ol>", pgrants$CVSummary, "</ol>"), collapse = "\n")
+
+
+awards <- read_excel("~/OneDrive/WileyDossier/CV_Full.xlsx", sheet = "Awards")
+awards <- as.data.table(awards)[order(-Year, Stop, na.last = FALSE)]
+awards[, CVSummary := sprintf("`%s` | %s (%s)",
+                              ifelse(is.na(Stop), as.character(Year),
+                                     sprintf("%d - %d", Year, Stop)),
+                              Name, Funder)]
+awards[, Num := .N:1]
+awards2 <- awards
+awards2[, CVSummary := sprintf("<li value = %d>%s</li>", Num, CVSummary)]
+awards2 <- paste(c("<ol>", awards2$CVSummary, "</ol>"), collapse = "\n")
+
+summarystatement <- sprintf(
+  "Lecturer at Monash University; **%0.1f** years post PhD; nearly $4 million AUD in grant funding; **%d** primary, **%d** co-supervised doctoral students; **2** Associate/Statistical editorial positions at journals; NHMRC panel member; **%d** first/last & **%d** co-author peer reviewed articles; **%d** books; **%d** other pubs; **%d** first/last & **%d** co-author peer reviewed abstracts; **%d** invited presentations; **6** software packages developed.",
+  yearSincePhD,
+  NPrimary, NSecondary,
+  NFirstLast, NCoAuthor,
+  NBooks, NOther,
+  nrow(leadabstracts),
+  nrow(coabstracts),
+  nrow(invited))
+
+dcif <- pubs[, .(CIF = sum(IF, na.rm=TRUE)), by = Year]
+mdcif5 <- dcif[Year %in% (oldyear:cyear), (M = mean(CIF))]
+
+pcif <- ggplot(dcif, aes(Year, CIF)) +
+  geom_hline(yintercept = 11, colour = "grey80") + 
+  geom_hline(yintercept = 14, colour = "grey80") + 
+  geom_hline(yintercept = 22, colour = "grey80") + 
+  geom_hline(yintercept = 27.5, colour = "grey80") +
+  geom_line(colour = "grey60") +
+  geom_point() +
+  geom_text(aes(y = CIF + 1.5, label = round(CIF, 1))) +
+  geom_segment(aes(x = oldyear, xend = cyear, y = mdcif5, yend = mdcif5),
+               colour = "black", size = 1, linetype = 2) +
+  geom_text(aes(x = (cyear + oldyear)/2, y = mdcif5 + 2,
+                label = sprintf("5 Year Average = %0.1f", mdcif5)),
+            size = 5) + 
+  scale_x_continuous(
+    "Data from Clarivate JCR. Benchmarks are aspirational levels for Teaching & Research at Monash University.",
+    breaks = 2013:cyear,
+                     labels = ifelse(
+                       2013:cyear == 2015,
+                       "2015\n(PhD Awarded)",
+                       2013:cyear)) + 
+  theme_classic() +
+  theme(axis.title.y = element_blank()) +
+  scale_y_continuous(
+    breaks = c(0, 11, 14, 22, 27.5),
+    labels = c("0", "Lecturer (11)", "Senior Lecturer (14)", "Assoc. Prof. (22)", "Professor (27.5)")) + 
+  ggtitle("Cumulative journal impact factors for all publications by year") +
+  ## labs(caption = "Data from Clarivate JCR.\nBenchmarks are aspirational levels for Teaching & Research faculty at Monash University.") +
+  coord_cartesian(xlim = c(2013 - .5, cyear + .5),
+                  ylim = c(0, max(dcif$CIF) + 5),
+                  expand = FALSE)
+
+dq1 <- pubs[, .(PQ1 = mean(Q1 == 1, na.rm=TRUE)), by = Year]
+mdq15 <- dq1[Year %in% (oldyear:cyear), (M = mean(PQ1*100))]
+
+pq1 <- ggplot(dq1, aes(Year, PQ1)) +
+  geom_hline(yintercept = .60, colour = "grey80") + 
+  geom_hline(yintercept = .70, colour = "grey80") + 
+  geom_hline(yintercept = .75, colour = "grey80") + 
+  geom_line(colour = "grey60") +
+  geom_point() +
+  geom_text(aes(y = PQ1 + .03, label = sprintf("%0.0f%%", round(PQ1 * 100)))) +
+  geom_segment(aes(x = oldyear, xend = cyear, y = mdq15/100, yend = mdq15/100),
+               colour = "black", size = 1, linetype = 2) +
+  geom_text(aes(x = (cyear + oldyear)/2, y = mdq15/100 + .03,
+                label = sprintf("5 Year Average = %0.1f%%", mdq15)),
+            size = 5) + 
+  scale_x_continuous(
+    "Data from Clarivate JCR. Benchmarks are aspirational levels for Teaching & Research at Monash University.",
+    breaks = 2013:cyear,
+                     labels = ifelse(
+                       2013:cyear == 2015,
+                       "2015\n(PhD Awarded)",
+                       2013:cyear)) + 
+  theme_classic() +
+  theme(axis.title.y = element_blank()) +
+  scale_y_continuous(
+    breaks = c(.5, .6, .7, .75, 1),
+    labels = c("50%",
+               "Lecturer (60%)", "Senior Lecturer (70%)", "Assoc. Prof. & Prof. (75%)", "100%")) +
+  ggtitle("Percent publications in top quartile (Q1) journals by year") + 
+  ## labs(caption = "Data from Clarivate JCR.\nBenchmarks are aspirational levels for Teaching & Research faculty at Monash University.") +
+  coord_cartesian(xlim = c(2013 - .5, cyear + .5),
+                  ylim = c(pmin(.5, min(dq1$PQ1)), 1.07),
+                  expand = FALSE)
+
+```
+
+<br></br>
+
+## <span class="fa fa-university"></span> EDUCATION
+
+`2010 - 24 March 2015`
+**Doctor of Philosophy** in Psychology (Health & Quantitative) from
+the *University of California, Los Angeles*. 
+Supervisor: Annette Stanton. Dissertation title: *Measurement of
+Psychosocial Resources, Allostatic Load, and Their Relations*.
+GPA: 3.96/4.00
+
+`2010 - 2011`
+**Master of Arts** in Psychology from the *University of California,
+Los Angeles*. Supervisor: Annette Stanton.
+
+`2006 - 2010`
+**Bacher of Arts** with honors in Psychology from the *University of
+California Riverside*. Supervisor: Howard Friedman. GPA: 3.95/4.00
+
+`2002 - 2005`
+**General Coursework** at *Riverside Community College*. Undeclared
+major. GPA: 4.00/4.00
+
+<br></br>
+
+## Academic Summary
+
+`r summarystatement`
+
+<br></br>
+
+## <span class="fa fa-building"></span> WORK EXPERIENCE
+
+`June 2016 - present`
+**Lecturer**, Turner Institute for Brain and Mental Health, 
+School of Psychological Sciences Lecturer (tenure-track
+Assistant Professor)
+
+`December 2016 - 2019`
+**Senior advisor**, Elkhart Group LLC.
+
+`January 2015 - June 2016`
+**Post Doctoral Fellow**, Australia Catholic University
+
+`July 2013 - March 2015`
+**Graduate Student Researcher**, My Year After Cancer Study (1R01 CA133081)
+
+`June 2013 - December 2016`
+**Partner and Data Scientist**, Elkhart Group Ltd.
+
+`August 2011 - June 2013`
+**Programmer analyst**, IDRE Statistical Consulting Group 
+
+`September 2008 - June 2010`
+**Research Assistant and Honors Student**, Professor Howard Friedman's
+Laboratory at the University of California, Riverside
+
+<br></br>
+
+-------------------------------------------
+
+## <span class="fa fa-book-open"></span> PUBLICATIONS
+
+### <span class="fa fa-file-alt"></span> Peer-Reviewed Articles
+
+`r paste(unlist(lapply(unique(prpubs$Year), printPubs, d = prpubs)), collapse = "\n")`
+
+### <span class="fa fa-book"></span> Books and Book Chapters
+
+`r paste(unlist(lapply(unique(bpubs$Year), printPubs, d = bpubs)), collapse = "\n")`
+
+### <span class="fa fa-file-contract"></span> Commentaries and Letters to the Editor
+
+`r paste(unlist(lapply(unique(epubs$Year), printPubs, d = epubs)), collapse = "\n")`
+
+### Quantitative Publication Information
+
+`r ggplotly(citeplot)`
+
+`r ggplotly(pcif)`
+
+`r ggplotly(pq1)`
+
+<br></br>
+
+-------------------------------------------
+
+## <span class="fa fa-chalkboard-teacher"></span> ABSTRACTS, PRESENTATIONS, & SYMPOSIA
+
+### First or Last Author
+
+`r paste(unlist(lapply(unique(leadabstracts$Year), printPubs, d = leadabstracts)), collapse = "\n")`
+
+### Co-Author
+
+`r paste(unlist(lapply(unique(coabstracts$Year), printPubs, d = coabstracts)), collapse = "\n")`
+
+### Invited
+
+`r paste(unlist(lapply(unique(invited$Year), printPubs, d = invited)), collapse = "\n")`
+
+
+## <span class="fa fa-dollar-sign"></span> GRANTS
+
+`Current`
+`r cgrants`
+
+`Past`
+`r pgrants`
+
+
+## <span class="fa fa-award"></span> AWARDS
+
+`r awards2`
+
+
+## <span class="fa fa-university"></span> TEACHING
+
+`Doctoral`
+`r dteaching`
+
+`Honours`
+`r hteaching`
+
+`Undergraduate`
+`r uteaching`
+
+
+## <span class="fa fa-graduation-cap"></span> STUDENTS
+
+`Doctoral`
+`r dstudents`
+
+`Honours`
+`r hstudents`

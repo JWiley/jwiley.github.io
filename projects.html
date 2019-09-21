@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Projects</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><span class="fa fa-home"></span> Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="projects.html">
+    <span class="fa fa-cogs"></span>
+     
+    Projects
+  </a>
+</li>
+<li>
+  <a href="people.html">
+    <span class="fa fa-users"></span>
+     
+    People
+  </a>
+</li>
+<li>
+  <a href="alumni.html">
+    <span class="fa fa-graduation-cap"></span>
+     
+    Alumni
+  </a>
+</li>
+<li>
+  <a href="cv.html">
+    <span class="fa fa-file-alt"></span>
+     
+    Wiley CV
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Projects</h1>
+
+</div>
+
+
+<p><br></br></p>
+<div id="shs-2019---current" class="section level3">
+<h3>SHS | 2019 - current |</h3>
+<p>Many young adults move states or countries to start their university or college studies. During this time, they face many changes: new independence from family, moving and living in a new city, and new courses and studies. All these changes can cause stress. The purpose of this study is to understand how young adults respond to stress during these transitions and what helps people manage stress. The <strong>S</strong>tress and <strong>H</strong>ealth <strong>S</strong>tudy focuses on how family experiences, resilience, behaviours (diet, exercise, sleep), and coping strategies relate to stress and how people feel. The findings of this study will help us better understand stress and responses to stress, which we hope can help us develop interventions to help people manage stress effectively. <br /><span class="fa fa-info-circle"></span> For more info, read the <a href="SHS_Explanatory_Statement.pdf">Explanatory Statement</a>.</p>
+<hr />
+</div>
+<div id="nhmrc-investigator-grant-2019---current" class="section level3">
+<h3>NHMRC Investigator Grant | 2019 - current |</h3>
+<p><strong>NHMRC Investigator Grant</strong>: <em>Optimising treatment to reduce sleep and depression symptoms in cancer: A personalised medicine approach</em> <br /> Diagnosis and treatment of cancer place an enormous strain on individuals, with particularly deleterious effects on sleep and depression. Although multiple evidence-based interventions exist for both sleep and depression, up to 50% of people do not respond to first line treatments. Symptom burden can be reduced by optimising treatment selection, yet traditional, theoretically-driven efforts at determining who will benefit most from a given treatment have yielded few results. <br /> My research proposes to use machine learning on existing treatment trials to build algorithms that use individuals’ characteristics to generate personalised predictions for which of multiple evidence-based treatments is most likely to result in the largest symptom reductions. Where gaps emerge in existing trials for building treatment selection algorithms, over the next five years, my group also will conduct new, brief sleep and depression trials in cancer to fill these gaps and enhance and validate algorithms developed on existing datasets. My dual background in behavioural medicine and advanced quantitative methods along, a team of five PhD students, and research positions at the Peter MacCallum Cancer Centre make me ideally positioned to conduct this research. <br /> Optimal matching of individuals to treatments can improve outcomes by reducing the time it takes to find a treatment that works for an individual. This is particularly significant in the context of cancer where patients have limited energy to engage in treatments and the growing number of cancer patients and survivors tax limited health care resources. Models and algorithms developed during this fellowship will be disseminated to stakeholders by deploying them through freely available, easy to use online web applications.</p>
+<hr />
+</div>
+<div id="sleepwell-2018---current" class="section level3">
+<h3>SleepWell | 2018 - current |</h3>
+<p>Women with breast cancer commonly report sleep disruptions and fatigue, particularly during chemotherapy. The <em>SleepWell</em> is a randomized controlled trial designed to test interventions we hope may be effective at improving sleep and reducing fatigue in women with breast cancer while being feasible for wide spread dissemination. <em>SleepWell</em> is being conducted at the Victorian Comprehensive Cancer Centre and being lead and conducted by Ms. Helena Bean as part of her doctoral dissertation. <br /><span class="fa fa-info-circle"></span> For more info, read the <a href="PICF_SleepWell.pdf">Explanatory Statement</a>.</p>
+<hr />
+</div>
+<div id="destress-2018---2018" class="section level3">
+<h3>DESTRESS | 2018 - 2018 |</h3>
+<p>The <em>D</em>iet, <em>E</em>xercise, <em>Str</em>ess, <em>E</em>motions, <em>S</em>peech, and <em>S</em>leep study (DESTRESS) was a 7-day, daily diary study in 135 adults using ecological momentary assessment to examine behavioural (diet, sleep, physical activity) and psychological (stress, emotions, psychosocial vulnerabilities) factors. DESTRESS replicated findings from our previous ACES study and extended it by examining the daily dynamics of sleep and psychological factors with diet. A unique feature of DESTRESS was the collection of qualitative data on stress experiences through brief recorded speech throughout the day. Analyses from these data are still underway.<br /><span class="fa fa-info-circle"></span> For more info, read the <a href="DESTRESS_Explanatory_Statement.pdf">Explanatory Statement</a>.<br/> <span class="fa fa-newspaper"></span> To learn about the results, read the <a href="https://sway.office.com/YIoVCcBjbsP3MOqV?ref=Link">Participant Report</a>.</p>
+<hr />
+</div>
+<div id="aces-2017---2017" class="section level3">
+<h3>ACES | 2017 - 2017 |</h3>
+<p>The <em>A</em>ctivity, <em>C</em>oping, <em>E</em>motions, <em>S</em>tress and <em>S</em>leep (ACES) study was a 12-day, daily diary study in 191 adults using ecological momentary assessment to examine behavioural (sleep, physical activity) and psychological (stress, emotions, psychosocial vulnerabilities) factors. ACES was able to break ground and shed light on the daily dynamics between stress and sleep and sleep and emotions using high quality, objective data. Analyses from these data are still underway.<br /><span class="fa fa-info-circle"></span> For more info, read the <a href="ACES_Explanatory_Statement.pdf">Explanatory Statement</a>.<br/> <span class="fa fa-newspaper"></span> To learn about the results, read the <a href="https://sway.office.com/YIoVCcBjbsP3MOqV?ref=Link">Participant Report</a>.</p>
+<hr />
+</div>
+<div id="projects-we-collaborate-on" class="section level2">
+<h2>Projects We Collaborate On</h2>
+<div id="class-2019---current" class="section level3">
+<h3>CLASS | 2019 - current |</h3>
+<p>Over 70% of adolescents in Australia experience insufficient sleep. Yet, the extent to which the biological clock in the brain plays a role in cognitive function and academic functioning is currently not understood. The <strong>C</strong>ircadian, <strong>L</strong>ight, <strong>A</strong>dolescence, <strong>S</strong>leep, and <strong>S</strong>chool (<strong>CLASS</strong>) study is a longitudinal, cohort study lead by Monash University and PI Prof. Rajaratnam. CLASS uses state-of-the-art measures of the biological clock, rigorous assessment of light exposure and sophisticated analytical approaches. CLASS will demonstrate longitudinal relationships between environmental light exposure, multiple facets of sleep-wakefulness, and ecologically relevant measures of academic achievement. The proposed study will identify specific sleep and circadian markers that are linked to academic performance, and generate innovative algorithms that predict these associations. Findings from CLASS can help drive prevention and early intervention programs that use sleep-wake and light exposure information to improve sleep quality.</p>
+<hr />
+</div>
+<div id="repat-2019---current" class="section level3">
+<h3>REPAT | 2019 - current |</h3>
+<p>Approximately one-third of women coping with breast cancer experience persistent symptoms of depression, pain and fatigue, which are not normative and are difficult to treat. Emotional approach coping and expression of emotion is related to fewer and faster recovery from depression symptoms. However, expression of emotion is inconsistent with social norms in some cultures. Using visual art-making as a form of expression and communication within a safe and supportive relationship may be an effective way for women from cultures where emotion expression is not normative to approach, process and express their emotions. The <strong>R</strong>ole of <strong>E</strong>motional <strong>P</strong>rocessing in <strong>A</strong>rt <strong>T</strong>herapy (<strong>REPAT</strong>) for breast cancer palliative care patients study is a randomized controlled trial being lead by the University of Haifa in Israel. REPAT evaluates the impact of art making in women who have completed primary treatment for breast cancer. REPAT also has a focus on mechanisms including detailed assessments of emotion-regulation and physiological (e.g., cholinergic, anti-inflammatory processes) mechanisms that may underpin the link between art making and improvements in outcomes. REPAT also is unique in explicitly recruiting both Jewish and Arab women allowing a comparison of cultural differences and comparison of more traditional and collectivist ethno-cultures. <br /><span class="fa fa-info-circle"></span> For more info, visit the <a href="http://repat.haifa.ac.il/en/">http://repat.haifa.ac.il/en/</a>.</p>
+<hr />
+</div>
+<div id="mya-2014---current" class="section level3">
+<h3>MYA | 2014 - current |</h3>
+<p>The <strong>M</strong>y <strong>Y</strong>ear <strong>A</strong>fter (<strong>MYA</strong>) study is a longitudinal, cohort study of 460 women recently diagnosed with breast cancer. Women in the study were followed from shortly after breast cancer diagnosis (on average 2.1 months after diagnosis) for 12 months. The study was focused on identifying changes in depression symptoms over time and predictors of these different responses. While we continue work to identify risk and protective factors, we are actively leveraging what we have learned to build new interventions designed to reduce and prevent depression.</p>
+<hr />
+</div>
+</div>
+
+<br style = "line-height:100px;"></br>
+<p>Copyright &copy; 2019 by Behavioural Medicine Lab based in
+  Melbourne, Australia.  All rights reserved.</p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
