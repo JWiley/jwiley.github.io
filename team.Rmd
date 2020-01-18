@@ -1,5 +1,5 @@
 ---
-title: People
+title: Team
 ---
 
 
@@ -18,6 +18,8 @@ students[, PeopleSummary := sprintf(
 
 
 ```
+
+![](BML_Group_2019.jpg)
 
 <br></br>
 
